@@ -26,6 +26,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const logElement = document.getElementById('log');
+            let lastState = 'visible';
 
             function getFormattedTime() {
                 const now = new Date();
@@ -41,17 +42,29 @@
 
             function checkVisibility() {
                 if (document.hidden) {
-                    addLogEntry('User has left the page.');
+                    if (lastState !== 'hidden') {
+                        addLogEntry('User has left the page.');
+                        lastState = 'hidden';
+                    }
                 } else {
-                    addLogEntry('User has returned to the page.');
+                    if (lastState !== 'visible') {
+                        addLogEntry('User has returned to the page.');
+                        lastState = 'visible';
+                    }
                 }
             }
 
             function checkFocus() {
                 if (document.hasFocus()) {
-                    addLogEntry('User has returned to the page.');
+                    if (lastState !== 'visible') {
+                        addLogEntry('User has returned to the page.');
+                        lastState = 'visible';
+                    }
                 } else {
-                    addLogEntry('User has left the page.');
+                    if (lastState !== 'hidden') {
+                        addLogEntry('User has left the page.');
+                        lastState = 'hidden';
+                    }
                 }
             }
 
